@@ -1,0 +1,50 @@
+version: "3"
+services:
+  vtiger-crm:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "89:80"
+    volumes:
+      - "./vtigercrm:/var/www/html/public"
+      # - '/logs:/var/www/html/logs'
+      # - '/logs:/var/log'
+    networks:
+      - default
+      - mysql-network
+    depends_on:
+      - mysql-vt7
+  mysql-vt7:
+    image: mariadb:10.2.43
+    container_name: mysql-vt7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_USER: heriberto
+      MYSQL_PASSWORD: password
+    ports:
+      - "3308:3306"
+    networks:
+      - mysql-network
+
+volumes:
+  mysql_data:
+
+networks:
+  mysql-network:
+    driver: bridge
+
+  default:
+    name: vtiger74_default
+#Run on casa
+x-casaos:
+  scheme: http
+  # index: /
+  port_map: "89"
+  author: self
+  category: self
+  icon: https://icon2.cleanpng.com/20181125/cf/kisspng-vtiger-crm-logo-business-brand-customer-relationsh-customer-relationship-management-system-web-devz-5bfb3ea47bf809.4195674915431922285078.jpg
+  title:
+    custom: Vtiger 7.4
