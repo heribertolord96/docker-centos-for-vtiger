@@ -6,16 +6,22 @@ services:
     ports:
       - "89:80"
     volumes:
-      - "./vtigercrm:/var/www/html/public"
+      - "./vtigercrm:/var/www/html/"
       # - '/logs:/var/www/html/logs'
       # - '/logs:/var/log'
+      
     networks:
       - default
       - mysql-network
     depends_on:
       - mysql-vt7
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://tu_servidor_loki:3100/loki/api/v1/push"  
+      
   mysql-vt7:
-    image: mariadb:10.2.43
+    image: mariadb:10.4.32
     container_name: mysql-vt7
     volumes:
       - mysql_data:/var/lib/mysql
@@ -28,6 +34,10 @@ services:
       - "3308:3306"
     networks:
       - mysql-network
+    # logging:
+    #   driver: loki
+    #   options:
+    #     loki-url: "http://tu_servidor_loki:3100/loki/api/v1/push"  
 
 volumes:
   mysql_data:

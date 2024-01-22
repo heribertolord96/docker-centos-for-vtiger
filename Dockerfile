@@ -15,8 +15,10 @@ RUN yum -y install epel-release yum-utils
 RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 # Habilitar el repositorio PHP 7.3
 RUN yum-config-manager --enable remi-php73
+RUN yum -y install zip unzip
 # Instalar PHP 7.3 y extensiones comunes
-RUN yum -y install php php-mysqlnd php-pdo php-gd php-mbstring
+RUN yum -y install php php-mysqlnd php-pdo php-gd php-mbstring php-zip php-xml php-imap php-curl simplexml
+#yum install -y php-imap php-curl php-xml
 # Instalar Apache
 RUN yum -y install httpd
 
