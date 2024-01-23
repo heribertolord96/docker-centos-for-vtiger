@@ -5,25 +5,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - "89:80"
-      - "8443:443"
     volumes:
-      - "./vtigercrm:/var/www/html/"
-      - "/server/virtualhost.conf /etc/httpd/conf.d/my_virtualhost.conf"
+      - "./vtigercrm:/var/www/html"
       # - '/logs:/var/www/html/logs'
       # - '/logs:/var/log'
-
     networks:
       - default
       - mysql-network
     depends_on:
       - mysql-vt7
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://localhost:3100/loki/api/v1/push"
-
   mysql-vt7:
-    image: mariadb:10.4.32
+    image: mariadb:10.2.43
     container_name: mysql-vt7
     volumes:
       - mysql_data:/var/lib/mysql
@@ -36,10 +28,6 @@ services:
       - "3308:3306"
     networks:
       - mysql-network
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://localhost:3100/loki/api/v1/push"
 
 volumes:
   mysql_data:
@@ -53,7 +41,7 @@ networks:
 #Run on casa
 x-casaos:
   scheme: http
-  # index: /
+  index: /
   port_map: "89"
   author: self
   category: self
